@@ -47,10 +47,13 @@ public class Model {
     public  void printResult() {
         System.out.println("\n-------------RESULTS-------------");
         for (Element e : list) {
+            System.out.println("----------------------------");
             e.printResult();
             if (e instanceof Process) {
                 Process p = (Process) e;
-                System.out.println("mean length of queue = " + p.getMeanQueue() / tcurr + "\nfailure probability = " + p.getFailure() / (double) p.getQuantity());
+                System.out.println("mean length of queue = " + p.getMeanQueue() / tcurr +
+                        "\nfailure probability = " + p.getFailure() / (double) p.getQuantity() +
+                        "\nmean state = " + p.getMeanState() / tcurr);
             }
         }
     }

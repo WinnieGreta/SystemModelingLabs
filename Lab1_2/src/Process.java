@@ -1,12 +1,14 @@
 public class Process extends Element {
     private int queue, maxqueue, failure;
     private double meanQueue;
+    private double meanState;
 
     public Process(double delay) {
         super(delay);
         queue = 0;
         maxqueue = Integer.MAX_VALUE;
         meanQueue = 0.0;
+        meanState = 0.0;
     }
 
     @Override
@@ -32,6 +34,9 @@ public class Process extends Element {
             setQueue(getQueue() - 1);
             super.setState(1);
             super.setTnext(super.getTcurr() + super.getDelay());
+        }
+        if (super.getNextElement() != null) {
+            super.getNextElement().inAct();
         }
     }
 
@@ -59,6 +64,16 @@ public class Process extends Element {
     public void printInfo() {
         super.printInfo();
         System.out.println("failure = " + this.getFailure());
+    }
+
+    @Override
+    public void doStatistics(double delta) {
+        meanQueue = this.getMeanQueue() + this.queue * delta;
+        meanState = this.getMeanState() + this.getState() * delta;
+    }
+
+    public double getMeanState() {
+        return meanState;
     }
 
     public double getMeanQueue() {
