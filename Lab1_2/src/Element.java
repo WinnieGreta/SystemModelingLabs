@@ -152,7 +152,7 @@ public class Element {
     }
 
     public void printInfo() {
-        System.out.println(getName() + " state = " + getState() + " quantity = " + getQuantity() + " tnext = " + getTnext());
+        System.out.println(getName() + " state = " + getState() + " quantity = " + getQuantity() + " tnext = " + getTnext() + " tcurr = " + getTcurr());
     }
 
     public void doStatistics(double delta) {

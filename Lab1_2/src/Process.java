@@ -1,4 +1,4 @@
-public class Process extends Element {
+public class Process extends Element implements Cloneable {
     private int queue, maxqueue, failure;
     private double meanQueue;
     private double meanState;
@@ -78,5 +78,10 @@ public class Process extends Element {
 
     public double getMeanQueue() {
         return meanQueue;
+    }
+
+    @Override
+    protected Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }
