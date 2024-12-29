@@ -31,7 +31,9 @@ public class Model {
             }
             list.get(event).outAct();
             for (Element e : list) {
-                e.outAct();
+                if (e.getTnext() == tcurr) {
+                    e.outAct();
+                }
             }
             printInfo();
         }
