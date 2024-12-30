@@ -84,7 +84,18 @@ public class ProcessMod extends Element {
             }
         }
         //this stays, it's for model as a whole
-        if (super.getNextElement() != null) {
+        if(super.getNextElements() != null && super.getNextElementsProbabilities() != null) {
+            double[] probs = super.getNextElementsProbabilities();
+            double random = Math.random();
+            double cumulative = 0.0;
+            for(int i = 0; i < probs.length; i++) {
+                cumulative += probs[i];
+                if (random <= cumulative) {
+                    super.getNextElements().get(i).inAct();
+                    System.out.println(this.getName() + " passed event to " + super.getNextElements().get(i).getName());
+                }
+            }
+        } else if (super.getNextElement() != null) {
             super.getNextElement().inAct();
         }
     }
@@ -162,7 +173,7 @@ public class ProcessMod extends Element {
 //    }
 
     public float getStateNormalized() {
-        return ((float) this.getState()) / nModules;
+        return ((float) this.meanState) / nModules;
     }
 
     @Override

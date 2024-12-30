@@ -57,6 +57,13 @@ public class Model {
                         "\nfailure probability = " + p.getFailure() / (double) p.getQuantity() +
                         "\nmean state = " + p.getMeanState() / tcurr);
             }
+
+            if (e instanceof ProcessMod) {
+                ProcessMod p = (ProcessMod) e;
+                System.out.println("mean length of queue = " + p.getMeanQueue() / tcurr +
+                        "\nfailure probability = " + p.getFailure() / (double) (p.getQuantity() * p.getModules()) +
+                        "\nmean state = " + p.getMeanState() / tcurr + "\nnormalized mean state = " + p.getStateNormalized() / tcurr);
+            }
         }
     }
 }

@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+
 public class Element {
     private String name;
     private double tnext;
@@ -9,6 +11,9 @@ public class Element {
     private Element nextElement;
     private static int nextId = 0;
     private int id;
+
+    private ArrayList<Element> nextElements;
+    private double[] nextElementsProbabilities;
 
     public Element() {
         tnext = Double.MAX_VALUE;
@@ -159,4 +164,19 @@ public class Element {
 
     }
 
+    public void setNextElements(ArrayList<Element> nextElements) {
+        this.nextElements = nextElements;
+    }
+
+    public ArrayList<Element> getNextElements() {
+        return nextElements;
+    }
+
+    public void setNextElementsProbabilities(double[] nextElementsProbabilities) {
+        this.nextElementsProbabilities = nextElementsProbabilities;
+    }
+
+    public double[] getNextElementsProbabilities() {
+        return nextElementsProbabilities;
+    }
 }
