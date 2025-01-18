@@ -70,13 +70,14 @@ public class ProcessMod extends Element {
         super.outAct();
         //super.setTnext(Double.MAX_VALUE);
         this.setState(this.getState() - 1);
-        Collections.min(modules, Comparator.comparingDouble(Process::getTnext)).outAct();
-        System.out.println("out act happening");
+        Process activeModule = Collections.min(modules, Comparator.comparingDouble(Process::getTnext));
+        activeModule.outAct();
+        System.out.println("out act happening in " + this.getName());
         if (getQueue() > 0) {
             setQueue(getQueue() - 1);
             System.out.println("queue from out " + getQueue());
             this.setState(this.getState() + 1);
-            Collections.min(modules, Comparator.comparingDouble(Process::getTnext)).inAct();
+            activeModule.inAct();
             if(getTnextFromModules() != Double.MAX_VALUE) {
                 super.setTnext(getTnextFromModules());
             } else {
@@ -86,13 +87,17 @@ public class ProcessMod extends Element {
         //this stays, it's for model as a whole
         if(super.getNextElements() != null && super.getNextElementsProbabilities() != null) {
             double[] probs = super.getNextElementsProbabilities();
-            double random = Math.random();
+            //double random = Math.random();
+            double random = FunRand.rand.nextDouble();
             double cumulative = 0.0;
             for(int i = 0; i < probs.length; i++) {
                 cumulative += probs[i];
+                System.out.println(random);
+                System.out.println(cumulative);
                 if (random <= cumulative) {
                     super.getNextElements().get(i).inAct();
                     System.out.println(this.getName() + " passed event to " + super.getNextElements().get(i).getName());
+                    break;
                 }
             }
         } else if (super.getNextElement() != null) {

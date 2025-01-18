@@ -1,4 +1,6 @@
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.stream.Collectors;
 
 public class Model {
     private ArrayList<Element> list = new ArrayList<>();
@@ -21,7 +23,8 @@ public class Model {
                     event = e.getId();
                 }
             }
-            System.out.println("\nIt's time for event in " + list.get(event).getName() + ", time = " + tnext);
+            Element x = list.stream().filter(var -> var.getId() == event).collect(Collectors.toList()).getFirst();
+            System.out.println("\nIt's time for event in " + x.getName() + ", time = " + tnext);
             for (Element e : list) {
                 e.doStatistics(tnext - tcurr);
             }
@@ -29,7 +32,7 @@ public class Model {
             for (Element e : list) {
                 e.setTcurr(tcurr);
             }
-            list.get(event).outAct();
+            x.outAct();
             for (Element e : list) {
                 if (e.getTnext() == tcurr) {
                     e.outAct();
@@ -54,14 +57,14 @@ public class Model {
             if (e instanceof Process) {
                 Process p = (Process) e;
                 System.out.println("mean length of queue = " + p.getMeanQueue() / tcurr +
-                        "\nfailure probability = " + p.getFailure() / (double) p.getQuantity() +
+                        "\nfailure probability = " + p.getFailure() / (double) (p.getQuantity() + p.getFailure()) +
                         "\nmean state = " + p.getMeanState() / tcurr);
             }
 
             if (e instanceof ProcessMod) {
                 ProcessMod p = (ProcessMod) e;
                 System.out.println("mean length of queue = " + p.getMeanQueue() / tcurr +
-                        "\nfailure probability = " + p.getFailure() / (double) (p.getQuantity() * p.getModules()) +
+                        "\nfailure probability = " + p.getFailure() / (double) (p.getQuantity() + p.getFailure()) +
                         "\nmean state = " + p.getMeanState() / tcurr + "\nnormalized mean state = " + p.getStateNormalized() / tcurr);
             }
         }
