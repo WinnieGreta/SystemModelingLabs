@@ -9,8 +9,11 @@ public class CustomerSupportProcess extends Process {
     private double maxTimeInSystem;
     private double meanTimeInSystem;
 
+    private double statDelay;
+
     public CustomerSupportProcess(double delay) {
         super(delay);
+        statDelay = delay;
         this.queueList = new ArrayList<Double>();
         this.setTnext(Double.MAX_VALUE);
         meanQueue = 0.0;
@@ -90,6 +93,10 @@ public class CustomerSupportProcess extends Process {
 
     public double getMeanTimeInSystem() {
         return meanTimeInSystem;
+    }
+
+    public double getStatDelay() {
+        return statDelay;
     }
 
 }

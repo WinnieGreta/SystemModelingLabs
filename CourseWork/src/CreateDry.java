@@ -1,6 +1,9 @@
 public class CreateDry extends Element {
+    private double statDelay;
+
     public CreateDry(double delay) {
         super(delay);
+        statDelay = delay;
         super.setTnext(0.01);
     }
 
@@ -9,5 +12,9 @@ public class CreateDry extends Element {
         super.outAct();
         super.setTnext(super.getTcurr() + super.getDelay());
         super.getNextElement().inActDry(super.getTcurr());
+    }
+
+    public double getStatDelay() {
+        return statDelay;
     }
 }

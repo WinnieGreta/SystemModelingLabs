@@ -29,6 +29,10 @@ public class SimModel {
         model.simulate(1000.0);
     }
 
+    public static void simSim() {
+
+    }
+
     public static void complexModelSim() {
         Create c = new Create(2.0);
         Process p1 = new Process(1.0);

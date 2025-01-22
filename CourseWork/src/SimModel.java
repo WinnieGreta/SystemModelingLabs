@@ -3,18 +3,95 @@ import java.util.Arrays;
 
 public class SimModel {
     public static void main(String[] args) {
-        dryModel();
+        //verify();
+        experiment();
     }
 
-    public static void dryModel() {
-        CreateDry c = new CreateDry(10);
-        SuitsSeparatorProcess p1 = new SuitsSeparatorProcess(6);
-        JacketProcess p2 = new JacketProcess(5);
-        PantsProcess p3 = new PantsProcess(4);
-        SuitAssemblyProcess p4 = new SuitAssemblyProcess(5, 8);
-        CustomerSupportProcess p5 = new CustomerSupportProcess(15);
+    public static void experiment() {
+        for (int i = 0; i < 10; i++) {
+            dryModel(8, 8, 7, 6, 4, 6, 10);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(8, 8, 7, 6, 4, 6, 14);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(8, 8, 3, 2, 4, 9, 10);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(8, 8, 3, 2, 4, 9, 14);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(8, 4, 7, 2, 6, 6, 10);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(8, 4, 7, 2, 6, 6, 14);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(8, 4, 3, 6, 6, 9, 10);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(8, 4, 3, 6, 6, 9, 14);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(12, 4, 3, 6, 4, 6, 10);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(12, 4, 3, 6, 4, 6, 14);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(12, 4, 7, 2, 4, 9, 10);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(12, 4, 7, 2, 4, 9, 14);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(12, 8, 3, 2, 6, 6, 10);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(12, 8, 3, 2, 6, 6, 14);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(12, 8, 7, 6, 6, 9, 10);
+        }
+        for (int i = 0; i < 10; i++) {
+            dryModel(12, 8, 7, 6, 6, 9, 14);
+        }
+    }
 
-        System.out.println("id0 = " + c.getId() + "  id1 = " + p1.getId() + " id2 = " + p2.getId() + " id3 = " + p3.getId());
+    public static void verify() {
+        for (int i = 0; i < 5; i++) {
+            dryModel(10, 6, 5, 4, 5, 8, 12);
+        }
+        for (int i = 0; i < 5; i++) {
+            dryModel(12, 6, 5, 4, 5, 8, 12);
+        }
+        for (int i = 0; i < 5; i++) {
+            dryModel(10, 4, 5, 4, 5, 8, 12);
+        }
+        for (int i = 0; i < 5; i++) {
+            dryModel(10, 6, 7, 4, 5, 8, 12);
+        }
+        for (int i = 0; i < 5; i++) {
+            dryModel(10, 6, 5, 6, 5, 8, 12);
+        }
+        for (int i = 0; i < 5; i++) {
+            dryModel(10, 6, 5, 4, 6, 8, 12);
+        }
+        for (int i = 0; i < 5; i++) {
+            dryModel(10, 6, 5, 4, 5, 10, 12);
+        }
+        for (int i = 0; i < 5; i++) {
+            dryModel(10, 6, 5, 4, 5, 8, 9);
+        }
+    }
+
+    public static void dryModel(double createDelay, double separateDelay, double jacketDelay, double pantsDelay, double assemblySuccessDelay, double assemblyFailureDelay, double customerSupportDelay) {
+        CreateDry c = new CreateDry(createDelay);
+        SuitsSeparatorProcess p1 = new SuitsSeparatorProcess(separateDelay);
+        JacketProcess p2 = new JacketProcess(jacketDelay);
+        PantsProcess p3 = new PantsProcess(pantsDelay);
+        SuitAssemblyProcess p4 = new SuitAssemblyProcess(assemblySuccessDelay, assemblyFailureDelay);
+        CustomerSupportProcess p5 = new CustomerSupportProcess(customerSupportDelay);
 
         c.setNextElement(p1);
         p1.setNextElements(new ArrayList<Element>(Arrays.asList(p2, p3)));

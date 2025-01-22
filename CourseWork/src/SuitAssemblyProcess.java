@@ -180,4 +180,12 @@ public class SuitAssemblyProcess extends Process {
     public double getMeanTimeInSystem() {
         return meanTimeInSystem;
     }
+
+    public double getSuccessDelay() {
+        return successDelay;
+    }
+
+    public double getFailureDelay() {
+        return failureDelay;
+    }
 }

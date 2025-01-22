@@ -1,3 +1,6 @@
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.stream.Collectors;
 
@@ -40,6 +43,7 @@ public class ModelDry {
 
         }
         printResult();
+        recordResults("output_experiment.csv ");
     }
 
     public void printInfo() {
@@ -95,6 +99,96 @@ public class ModelDry {
                         "\nmax time in system for damaged suits = " + s.getMaxTimeInSystem() +
                         "\nmean time in system for damaged suits = " + s.getMeanTimeInSystem() / s.getQuantity());
             }
+        }
+    }
+
+    public void recordResults(String filename) {
+        try {
+            File file = new File(filename);
+            boolean isNewFile = !file.exists();
+
+            try (FileWriter writer = new FileWriter(file, true)) { // Append mode
+                StringBuilder headers = new StringBuilder();
+                StringBuilder values = new StringBuilder();
+                StringBuilder delayHeaders = new StringBuilder();
+                StringBuilder delayValues = new StringBuilder();
+
+                if (isNewFile) {
+                    headers.append("Time");
+                    delayHeaders.append("Time");
+                }
+                values.append(tcurr);
+                delayValues.append(tcurr);
+
+                for (Element e : list) {
+                    if (e instanceof CreateDry) {
+                        CreateDry s = (CreateDry) e;
+                        if (isNewFile) {
+                            headers.append("," + e.getName() + "_Quantity");
+                            delayHeaders.append("," + e.getName() + "_Delay");
+                        }
+                        values.append("," + s.getQuantity());
+                        delayValues.append("," + s.getStatDelay());
+                    } else if (e instanceof SuitsSeparatorProcess) {
+                        SuitsSeparatorProcess s = (SuitsSeparatorProcess) e;
+                        if (isNewFile) {
+                            headers.append("," + e.getName() + "_MeanQueue," + e.getName() + "_MaxQueue," + e.getName() + "_MeanState");
+                            delayHeaders.append("," + e.getName() + "_Delay");
+                        }
+                        values.append("," + (s.getMeanQueue() / tcurr) + "," + s.getMaxQueue() + "," + (s.getMeanState() / tcurr));
+                        delayValues.append("," + s.getStatDelay());
+                    } else if (e instanceof JacketProcess) {
+                        JacketProcess s = (JacketProcess) e;
+                        if (isNewFile) {
+                            headers.append("," + e.getName() + "_MeanQueue," + e.getName() + "_MaxQueue," + e.getName() + "_MeanState");
+                            delayHeaders.append("," + e.getName() + "_Delay");
+                        }
+                        values.append("," + (s.getMeanQueue() / tcurr) + "," + s.getMaxQueue() + "," + (s.getMeanState() / tcurr));
+                        delayValues.append("," + s.getStatDelay());
+                    } else if (e instanceof PantsProcess) {
+                        PantsProcess s = (PantsProcess) e;
+                        if (isNewFile) {
+                            headers.append("," + e.getName() + "_MeanQueue," + e.getName() + "_MaxQueue," + e.getName() + "_MeanState");
+                            delayHeaders.append("," + e.getName() + "_Delay");
+                        }
+                        values.append("," + (s.getMeanQueue() / tcurr) + "," + s.getMaxQueue() + "," + (s.getMeanState() / tcurr));
+                        delayValues.append("," + s.getStatDelay());
+                    } else if (e instanceof SuitAssemblyProcess) {
+                        SuitAssemblyProcess s = (SuitAssemblyProcess) e;
+                        if (isNewFile) {
+                            headers.append("," + e.getName() + "_JacketMeanQueue," + e.getName() + "_JacketMaxQueue," + e.getName() + "_MeanState," + e.getName() + "_UndamagedProcessed," + e.getName() + "_MaxTimeInSystem," + e.getName() + "_MeanTimeInSystem");
+                            delayHeaders.append("," + e.getName() + "_SuccessDelay," + e.getName() + "_FailureDelay");
+                        }
+                        values.append("," + (s.getJacketMeanQueue() / tcurr) + "," + s.getJacketMaxQueue() + "," + (s.getMeanState() / tcurr) + "," + s.getQuantityGood() + "," + s.getMaxTimeInSystem() + "," + (s.getMeanTimeInSystem() / s.getQuantityGood()));
+                        delayValues.append("," + s.getSuccessDelay() + "," + s.getFailureDelay());
+                    } else if (e instanceof CustomerSupportProcess) {
+                        CustomerSupportProcess s = (CustomerSupportProcess) e;
+                        if (isNewFile) {
+                            headers.append("," + e.getName() + "_MeanQueue," + e.getName() + "_MaxQueue," + e.getName() + "_MeanState," + e.getName() + "_MaxTimeInSystem," + e.getName() + "_MeanTimeInSystem");
+                            delayHeaders.append("," + e.getName() + "_Delay");
+                        }
+                        values.append("," + (s.getMeanQueue() / tcurr) + "," + s.getMaxQueue() + "," + (s.getMeanState() / tcurr) + "," + s.getMaxTimeInSystem() + "," + (s.getMeanTimeInSystem() / s.getQuantity()));
+                        delayValues.append("," + s.getStatDelay());
+                    } else {
+                        if (isNewFile) {
+                            headers.append("," + e.getName() + "_N/A");
+                            delayHeaders.append("," + e.getName() + "_N/A");
+                        }
+                        values.append(",N/A");
+                        delayValues.append(",N/A");
+                    }
+                }
+
+                if (isNewFile) {
+                    writer.write(delayHeaders.toString() + ",");
+                    writer.write(headers.toString() + "\n");
+                }
+                writer.write(delayValues.toString() + ",");
+                writer.write(values.toString() + "\n");
+                System.out.println("Results successfully appended to " + filename);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }

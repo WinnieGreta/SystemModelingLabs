@@ -6,9 +6,11 @@ public class PantsProcess extends Element {
     private double meanQueue;
     private double meanState;
     private double maxQueue;
+    private double statDelay;
 
     public PantsProcess(double delay) {
         super(delay);
+        statDelay = delay;
         queueList = new ArrayList<Double>();
         this.setTnext(Double.MAX_VALUE);
         maxQueue = 0.0;
@@ -88,5 +90,9 @@ public class PantsProcess extends Element {
 
     public double getMaxQueue() {
         return maxQueue;
+    }
+
+    public double getStatDelay() {
+        return statDelay;
     }
 }
